@@ -22,5 +22,7 @@ public class BackupScheduler {
     @Scheduled(fixedDelay = 5000)
     public void performBackup() {
         System.out.println("sftpService = " + backupService);
+        backupService.backupFiles(remoteDir, localDir);
+        System.out.println("DONE");
     }
 }
