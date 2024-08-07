@@ -19,10 +19,8 @@ public class BackupScheduler {
     private String localDir;
 
     //    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 100000)
     public void performBackup() {
-        System.out.println("sftpService = " + backupService);
         backupService.backupFiles(remoteDir, localDir);
-        System.out.println("DONE");
     }
 }

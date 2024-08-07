@@ -4,9 +4,11 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class SFTPUtil {
 
@@ -30,6 +32,12 @@ public class SFTPUtil {
     private String prikey;
 
     public ChannelSftp connect() throws JSchException {
+        log.info("[REMOTE SERVER INFORMATION]");
+        log.info("HOST : {}", host);
+        log.info("PORT : {}", port);
+        log.info("USERNAME : {}", username);
+        log.info("------------------------------------------------------");
+
         boolean serverKey = true;
 
         session = jsch.getSession(username, host, port);

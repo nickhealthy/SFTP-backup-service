@@ -1,5 +1,6 @@
 package com.finevo.sftpFiles.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
@@ -10,7 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-
+@Slf4j
 @Component
 public class CompressionUtil {
 
@@ -37,6 +38,8 @@ public class CompressionUtil {
                     aos.write(buffer, 0, length);
                 }
             }
+
+            log.info("[LOCAL] {} 파일 압축", outputZipFile);
 
             aos.closeArchiveEntry();
         } catch (Exception e) {

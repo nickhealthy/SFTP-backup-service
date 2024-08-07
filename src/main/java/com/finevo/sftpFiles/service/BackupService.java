@@ -30,11 +30,19 @@ public class BackupService {
      */
     public void backupFiles(String remoteDir, String localDir) {
         try {
+            log.info("====================== 백업 실행 ======================");
             channelSftp = sftpUtil.connect();
+
+            log.info("[REMOTE] {} 경로 파일 [LOCAL] {}으로 백업/압축/삭제 진행\n", remoteDir, localDir);
             // remote 백업 파일 다운로드 후, local 원본 백업 파일 압축/삭제
             backupDirectory(channelSftp, remoteDir, localDir);
+            log.info("-----------------------백업 완료 -------------------------\n");
+
+            log.info("[REMOTE] {} 경로 파일 모두 삭제", remoteDir);
             // remote 디렉토리 안의 백업 파일을 재귀적으로 삭제
             deleteFiles(channelSftp, remoteDir, remoteDir);
+
+            log.info("====================== 백업 종료 ======================");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,9 +80,11 @@ public class BackupService {
                 if (!localFile.exists()) {
                     try (OutputStream outputStream = new FileOutputStream(localFile)) {
                         channelSftp.get(remoteFilePath, outputStream);
+                        log.info("[REMOTE] {} 파일 다운로드", remoteFilePath);
                     }
                     CompressionUtil.compressFile(localFile, localFilePath + ".zip");
                     localFile.delete(); // 원본 파일 삭제
+                    log.info("[LOCAL] {} 파일 삭제\n", localFilePath);
                 }
             }
         }
