@@ -1,0 +1,33 @@
+<configuration>
+
+    <property name="LOG_HOME" value="/logs"/>
+
+    <!-- 콘솔에 로그 출력 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 로그 파일의 디렉토리와 파일 이름을 날짜별로 설정 -->
+    <appender name="DAILY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/backup.log</file>
+
+        <!-- 날짜에 따라 파일이 변경되도록 설정 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd, aux}/backup_%d{yyyyMMdd}.log</fileNamePattern>
+<!--            <maxHistory>30</maxHistory> &lt;!&ndash; 최대 보관 일수 설정 &ndash;&gt;-->
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 로거 설정 -->
+    <root level="info">
+        <appender-ref ref="DAILY_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
