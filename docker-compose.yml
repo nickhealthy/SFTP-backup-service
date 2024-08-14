@@ -1,0 +1,16 @@
+services:
+  server1:
+    build: .
+    ports:
+      - "22:22"
+    restart: unless-stopped
+    container_name: server1
+    privileged: true
+
+  server2:
+    build: .
+    ports:
+      - "21:22"
+    restart: unless-stopped
+    container_name: server2
+    privileged: true
