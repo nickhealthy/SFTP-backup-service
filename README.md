@@ -1,7 +1,5 @@
 ## SFTP 백업: 자동 압축 및 파일 정리
 
----
-
 SFTP (Jsch 라이브러리 사용)를 통해 원격지의 백업 대상 파일을 로컬로 백업하고, 백업한 파일을 압축한 후 원격지의 원본 파일을 삭제합니다. 또한, 로컬에서도 압축된 파일을 제외한 나머지 백업 원본 파일들을 삭제합니다. 모든 작업은 지정된 시간에 자동으로 스케줄링되어 실행됩니다.
 
 ### application.properties 설정
@@ -42,3 +40,10 @@ sftp.servers[1].local-dir=/backup/server2
 # SFTP 서버의 인증 키 파일 경로 (비밀번호 대신 키 기반 인증을 사용할 때 개인 키 파일의 경로를 지정)
 sftp.servers[1].prikey=C:\\Users\\nick\\.ssh\\id_rsa
 ```
+
+### 테스트 및 서비스 실행 방법 
+1. `application.properties` 설정
+2. docker / docker-compose 설치
+3. `docker compose up` 명령어로 백업 대상 서버 실행
+4. `application.properties`에 설정한 remote 백업 경로에 백업 파일 생성 
+5. 애플리케이션 실행 및 `application.properties`에 설정한 local에 백업 확인
