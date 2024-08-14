@@ -5,8 +5,9 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import static com.finevo.sftpFiles.config.SftpProperties.Server;
 
 @Slf4j
 @Component
@@ -16,42 +17,22 @@ public class SFTPUtil {
     Session session = null;
     ChannelSftp channelSftp = null;
 
-    @Value("${sftp.host}")
-    private String host;
-
-    @Value("${sftp.port}")
-    private int port;
-
-    @Value("${sftp.username}")
-    private String username;
-
-    @Value("${sftp.password}")
-    private String password;
-
-    @Value("${sftp.prikey}")
-    private String prikey;
-
-    public ChannelSftp connect() throws JSchException {
-        log.info("[REMOTE SERVER INFORMATION]");
-        log.info("HOST : {}", host);
-        log.info("PORT : {}", port);
-        log.info("USERNAME : {}", username);
-        log.info("------------------------------------------------------");
+    public ChannelSftp connect(Server server) throws JSchException {
 
         boolean serverKey = true;
 
-        session = jsch.getSession(username, host, port);
-        session.setPassword(password);
+        session = jsch.getSession(server.getUser(), server.getHost(), server.getPort());
+        session.setPassword(server.getPassword());
         session.setConfig("StrictHostKeyChecking", "no");
 
-        if (prikey == null || prikey.isEmpty()) {
+        if (server.getPrikey() == null || server.getPrikey().isEmpty()) {
             serverKey = false;
         }
 
         if (!serverKey) {
-            session.setPassword(password);
+            session.setPassword(server.getPassword());
         } else {
-            jsch.addIdentity(prikey);
+            jsch.addIdentity(server.getPrikey());
         }
 
         session.connect();
